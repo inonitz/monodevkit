@@ -3,14 +3,42 @@ PROJECT_FOLDER_BASE  = $(shell pwd)
 PROJECT_FOLDER       = "$(shell cygpath -m $(PROJECT_FOLDER_BASE))"
 
 
-PROJNAME = libimgui
-TARGET   = $(PROJNAME).a
+BUILDDIR_BASE 	   :=build
+APPEND_RELEASE_DIR :=release
+APPEND_DEBUG_DIR   :=debug
+APPEND_DIR_CHOSEN  :=
+BUILDDIR 		   :=$(BUILDDIR_BASE)/
+
+ifndef DEBUG
+$(error DEBUG variable isn't defined. Can't proceed with build process)
+else
+$(info [DEBUG='$(DEBUG)'] DEBUG    Variable defined		   )
+$(info [DEBUG='$(DEBUG)'] BUILDDIR Variable ["$(BUILDDIR)"])
+endif
+
+ifeq ('$(DEBUG)' , '1')
+	APPEND_DIR_CHOSEN:=$(APPEND_DEBUG_DIR)
+	BUILDDIR:=$(BUILDDIR)$(APPEND_DEBUG_DIR)
+else
+	APPEND_DIR_CHOSEN:=$(APPEND_RELEASE_DIR)
+	BUILDDIR:=$(BUILDDIR)$(APPEND_RELEASE_DIR)
+endif
+$(info [DEBUG='$(DEBUG)'] BUILDDIR Variable ["$(BUILDDIR)"] )
+
+SRCDIR    := src
+OBJDIR    := $(BUILDDIR)/obj
+OUTPUTDIR := $(BUILDDIR)/bin
+
+
+
+
+PROJNAME = libstbi
+TARGET   = $(PROJNAME)_$(APPEND_DIR_CHOSEN).a
 LINKER   = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-ld
 CPPC  	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-g++
 CC  	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-gcc
 ASMC 	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-as
 ARCHIVE  = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-ar
-
 ASMC 	 = as
 ASMFLAGS = -O0
 CXXFLAGS =  -c \
@@ -26,27 +54,12 @@ CVERSION   = c11
 CXXVERSION = c++17
 
 
-LIB_FILES     = -lglfw3
-LIB_INC_PATHS = -I$(COMPILER_BASE_FOLDER)/../lib/GLFW/include
-LIB_PATHS     = -L$(COMPILER_BASE_FOLDER)/../lib/GLFW/lib
+LIB_FILES     =
+LIB_INC_PATHS =
+LIB_PATHS     =
 
 
-LDFLAGS = \
-		$(LIB_FILES) \
-		-dl \
-		-lopengl32 \
-		-lm \
-		-lunwind \
-		-lc++ \
-		-lpthread \
-		-lopengl32 \
-		-static-libgcc \
- 		-static-libstdc++ \
-		
-ARFLAGS = \
-	rcs \
-
-
+# Common LDFLAGS - 
 #		-msse4.1 \
 #		-msse4.2 \
 #		-mavx \
@@ -63,32 +76,19 @@ ARFLAGS = \
 #		-lXau \
 #		-lXdmcp \
 #		-lXrandr \
+#       -lopengl32 \
+#       -lunwind \
 
 
+LDFLAGS = \
+		$(LIB_FILES) \
+		-lm \
+		-static-libgcc \
+ 		-static-libstdc++ \
+		
+ARFLAGS = \
+	rcs \
 
-
-BUILDDIR_BASE 	   :=build
-APPEND_RELEASE_DIR :=release
-APPEND_DEBUG_DIR   :=debug
-BUILDDIR 		   :=$(BUILDDIR_BASE)/
-
-ifndef DEBUG
-$(error DEBUG variable isn't defined. Can't proceed with build process)
-else
-$(info [DEBUG='$(DEBUG)'] DEBUG    Variable defined		   )
-$(info [DEBUG='$(DEBUG)'] BUILDDIR Variable ["$(BUILDDIR)"])
-endif
-
-ifeq ('$(DEBUG)' , '1')
-	BUILDDIR:=$(BUILDDIR)$(APPEND_DEBUG_DIR)
-else
-	BUILDDIR:=$(BUILDDIR)$(APPEND_RELEASE_DIR)
-endif
-$(info [DEBUG='$(DEBUG)'] BUILDDIR Variable ["$(BUILDDIR)"] )
-
-SRCDIR    := src
-OBJDIR    := $(BUILDDIR)/obj
-OUTPUTDIR := $(BUILDDIR)/bin
 
 
 
@@ -165,6 +165,7 @@ info:
 
 
 setup:
+	export DEBUG=0
 	mkdir -p assets
 	mkdir -p src
 	mkdir -p build
@@ -179,17 +180,19 @@ setup:
 .PHONY: info run cleanall cleanbin
 
 
-
-# Release Build: 
-# A> export DEBUG=0 && make -j "Your CPU Core Count * 1.5" rel_internal
-# B> export DEBUG=0 && make rel_internal
-
-# Debug Build: 
-# A> export DEBUG=1 && make -j "Your CPU Core Count * 1.5" debug_internal
-# B> export DEBUG=1 && make debug_internal
-
-
-# if directory from recipe 'setup' is missing, call 'make setup'
+# if a directory from recipe 'setup' is missing/first setup, call 'make setup'
+#
+#
 # To Clean The Build Directory:
 # [release] export DEBUG=0 && make clean_internal cleanbin_internal
 # [ debug ] export DEBUG=1 && make clean_internal cleanbin_internal
+#
+# Release Build: 
+# 	export DEBUG=0 && make -j X rel_internal
+# 	export DEBUG=0 && make rel_internal
+# Debug  Build: 
+# 	export DEBUG=1 && make -j X debug_internal
+# 	export DEBUG=1 && make debug_internal
+#
+# X - Your Cpu Core Count * 1.5 (how many threads to use)
+# you can omit '-j X' if there's not alot of files.

@@ -14,10 +14,12 @@
         - [release] export DEBUG=0 && make clean_internal cleanbin_internal
         - [ debug ] export DEBUG=1 && make clean_internal cleanbin_internal
     * Release Build: 
-        1. export DEBUG=0 && make -j "Your CPU Core Count * 1.5" rel_internal
+        1. export DEBUG=0 && make -j X rel_internal
         2. export DEBUG=0 && make rel_internal
     *  Debug  Build: 
-        1. export DEBUG=1 && make -j "Your CPU Core Count * 1.5" debug_internal
+        1. export DEBUG=1 && make -j X debug_internal
         2. export DEBUG=1 && make debug_internal
 
+    * X - Your Cpu Core Count * 1.5 (how many threads to use)
+        - you can omit '-j X' if there's not alot of files.
     * Hope for the best ***>:)***
