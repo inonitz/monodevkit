@@ -1,6 +1,7 @@
-COMPILER_BASE_FOLDER = "$(shell printenv MINGW_W64_COMPILER_BASE)"
+COMPILER_BASE_FOLDER = "$(shell printenv COMPILER_BASE_FOLDER)"
 PROJECT_FOLDER_BASE  = $(shell pwd)
 PROJECT_FOLDER       = "$(shell cygpath -m $(PROJECT_FOLDER_BASE))"
+
 
 
 BUILDDIR_BASE 	   :=build
@@ -32,14 +33,13 @@ OUTPUTDIR := $(BUILDDIR)/bin
 
 
 
-PROJNAME = libstbi
+PROJNAME = lib_staticdevkit
 TARGET   = $(PROJNAME)_$(APPEND_DIR_CHOSEN).a
-LINKER   = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-ld
-CPPC  	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-g++
-CC  	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-gcc
-ASMC 	 = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-as
-ARCHIVE  = $(COMPILER_BASE_FOLDER)/bin/x86_64-w64-mingw32-ar
-ASMC 	 = as
+LINKER   = $(COMPILER_BASE_FOLDER)/bin/ld.lld.exe
+CPPC  	 = $(COMPILER_BASE_FOLDER)/bin/clang++.exe
+CC  	 = $(COMPILER_BASE_FOLDER)/bin/clang.exe
+ASMC 	 = $(COMPILER_BASE_FOLDER)/bin/clang++.exe
+ARCHIVE  = $(COMPILER_BASE_FOLDER)/bin/ar.exe
 ASMFLAGS = -O0
 CXXFLAGS =  -c \
 			-pedantic \
@@ -54,9 +54,9 @@ CVERSION   = c11
 CXXVERSION = c++17
 
 
-LIB_FILES     =
-LIB_INC_PATHS =
-LIB_PATHS     =
+LIB_FILES     = -lglfw3
+LIB_INC_PATHS = -I$(COMPILER_BASE_FOLDER)/ext/GLFW/include
+LIB_PATHS     =- I$(COMPILER_BASE_FOLDER)/ext/GLFW/lib
 
 
 # Common LDFLAGS - 
@@ -78,6 +78,12 @@ LIB_PATHS     =
 #		-lXrandr \
 #       -lopengl32 \
 #       -lunwind \
+
+#	-D_GLFW_WIN32 \
+#	-D_CRT_SECURE_NO_WARNINGS \
+#	-Wno-unused-value \
+#	-Wno-unused-parameter \
+#	-Wno-missing-field-initializers \
 
 
 LDFLAGS = \
@@ -145,13 +151,13 @@ debug_compile: rel_internal
 
 clean_internal:
 	@ echo -n "Deleting Compiled Files ... "  
-	-@ rm -r $(OBJDIR)/* > /dev/null || true
+	-@ rm -r $(OBJDIR)/* &> /dev/null || true
 	@ echo "Done! "
 
 
 cleanbin_internal:
 	@ echo -n Deleting Project Executable ...
-	-@ rm -r $(OUTPUTDIR)/$(TARGET) > /dev/null || true
+	-@ rm -r $(OUTPUTDIR)/$(TARGET) &> /dev/null || true
 	@ echo "Done! "
 
 
@@ -177,7 +183,7 @@ setup:
 	mkdir -p build/release/obj
 
 
-.PHONY: info run cleanall cleanbin
+.PHONY: setup info run cleanbin_internal clean_internal
 
 
 # if a directory from recipe 'setup' is missing/first setup, call 'make setup'
