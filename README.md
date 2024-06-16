@@ -1,25 +1,22 @@
-# imgui1896
-* Forked ***[ImGui v1.89.6](https://github.com/ocornut/imgui/releases/tag/v1.89.6)*** for static library compilation
-* Feel free to use this
-* Edit Makefile to change compilation target ***[I assume you know how to do that lol]***
-* Currently Targeting: x86-64-mingw-w64 **[C++17]**
-
-## **[Note]:**
-* **If *ANY* directory 'setup' recipe is missing, call 'make setup'**
-* To build you must first export the 'DEBUG'=[0, 1] Variable in your console.
-* To manage to build ***Anything***, First define **'COMPILER_BASE_FOLDER'** in your environment variables (Name is pretty self explanatory)
-* Check Library Dependencies - LIB_FILES, LIB_PATHS, LIB_INC_PATHS
-* ### ***<u>To Put it Simply:</u>***
-    * To Clean The Build Directory:
-        - [release] export DEBUG=0 && make clean_internal cleanbin_internal
-        - [debug]   export DEBUG=1 && make clean_internal cleanbin_internal
-    * Release Build: 
-        1. export DEBUG=0 && make -j 16 rel_internal
-        2. export DEBUG=0 && make rel_internal
-    *  Debug  Build: 
-        1. export DEBUG=1 && make -j 16 debug_internal
-        2. export DEBUG=1 && make debug_internal
-
-    * '16' - Your Cpu Core Count * 1.5 (how many threads to use)
-        - you can omit '-j X' if there's not alot of files.
-    * Hope for the best ***>:)***
+# Collection of libraries in a 'static library blob'
+* Forked ***[ImGui v1.89.6](https://github.com/ocornut/imgui/releases/tag/v1.89.6)***
+* Forked ***[Box2D v2.4.1](https://github.com/erincatto/box2d/releases/tag/v2.4.1)***
+* Forked ***[glad2](https://github.com/Dav1dde/glad)***
+* Forked ***[stb_image v2.30](https://github.com/nothings/stb/blob/master/stb_image.h)*** 
+* No License Whatsoever
+* Project-Specific Options **(C++17)**
+    - *ImGui* - impl_opengl3 impl_opengl3_loader impl_glfw
+    - *Box2D* - None
+    - *glad2* - ALIAS MX
+    - *stb_image* - None
+* ### **[Note]:**
+    * **If *ANY* directory 'setup' recipe is missing, call 'make setup'**
+    * **COMPILER_BASE_FOLDER** environment variable (Name's pretty self explanatory) **MUST BE DEFINED** 
+    * Check Library Dependencies inside **makefile.mf** ( Specifically, **LIB_FILES**, **LIB_PATHS**, **LIB_INC_PATHS** )
+        - *Currently, GLFW expected to exist at **$(COMPILER_BASE_FOLDER)/ext/***
+#### **Clean Build**
+    * [Debug]   make cleandbg
+    * [Release] make cleanrel
+#### **Build Library**
+    * [Debug]   make debug
+    * [Release] make release
