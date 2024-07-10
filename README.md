@@ -1,5 +1,5 @@
 # Collection of libraries in a 'static library blob'
-* Forked ***[ImGui v1.89.6](https://github.com/ocornut/imgui/releases/tag/v1.89.6)***
+* Forked ***[ImGui v1.90.5](https://github.com/ocornut/imgui/releases/tag/v1.90.5)***
 * Forked ***[Box2D v2.4.1](https://github.com/erincatto/box2d/releases/tag/v2.4.1)***
 * Forked ***[glad2](https://github.com/Dav1dde/glad)***
 * Forked ***[stb_image v2.30](https://github.com/nothings/stb/blob/master/stb_image.h)*** 
