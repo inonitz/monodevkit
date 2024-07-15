@@ -33,13 +33,15 @@ OUTPUTDIR := $(BUILDDIR)/bin
 
 
 
-PROJNAME = lib_staticdevkit
+PROJNAME = libsdevkit
 TARGET   = $(PROJNAME)_$(APPEND_DIR_CHOSEN).a
 LINKER   = $(COMPILER_BASE_FOLDER)/bin/ld.lld.exe
 CPPC  	 = $(COMPILER_BASE_FOLDER)/bin/clang++.exe
 CC  	 = $(COMPILER_BASE_FOLDER)/bin/clang.exe
 ASMC 	 = $(COMPILER_BASE_FOLDER)/bin/clang++.exe
 ARCHIVE  = $(COMPILER_BASE_FOLDER)/bin/ar.exe
+CVERSION   = c11
+CXXVERSION = c++17
 ASMFLAGS = -O0
 CXXFLAGS =  -c \
 			-pedantic \
@@ -48,52 +50,23 @@ CXXFLAGS =  -c \
 			-Wextra \
 			-march=native \
 			-mtune=native \
+			-D__GXX_TYPEINFO_EQUALITY_INLINE=0 \
 
-
-CVERSION   = c11
-CXXVERSION = c++17
+#			--verbose \
 
 
 LIB_FILES     = -lglfw3
-LIB_INC_PATHS = -I$(COMPILER_BASE_FOLDER)/ext/GLFW/include
-LIB_PATHS     =- I$(COMPILER_BASE_FOLDER)/ext/GLFW/lib
+LIB_PATHS     = -L$(COMPILER_BASE_FOLDER)/ext/GLFW/lib
+LIB_INC_PATHS = \
+	-I$(COMPILER_BASE_FOLDER)/ext/GLFW/include \
+	-I$(PROJECT_FOLDER)/src/glbinding/include \
+	-I$(PROJECT_FOLDER)/src/glbinding-aux/include \
 
 
-# Common LDFLAGS - 
-#		-msse4.1 \
-#		-msse4.2 \
-#		-mavx \
-#		-mavx2 \
-# 		-v \
-#		-lXinerama \
-#		-lXcursor \
-#		-lrt \
-#		-ldl \
-#		-lXi \
-#		-lX11 \
-# 		-lXxf86vm \
-#		-lxcb \
-#		-lXau \
-#		-lXdmcp \
-#		-lXrandr \
-#       -lopengl32 \
-#       -lunwind \
+ARFLAGS = rcs \
 
-#	-D_GLFW_WIN32 \
-#	-D_CRT_SECURE_NO_WARNINGS \
-#	-Wno-unused-value \
-#	-Wno-unused-parameter \
-#	-Wno-missing-field-initializers \
-
-
-LDFLAGS = \
-		$(LIB_FILES) \
-		-lm \
-		-static-libgcc \
- 		-static-libstdc++ \
-		
-ARFLAGS = \
-	rcs \
+# verbose
+# vrcs \
 
 
 

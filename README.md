@@ -1,13 +1,13 @@
 # Collection of libraries in a 'static library blob'
 * Forked ***[ImGui v1.90.5](https://github.com/ocornut/imgui/releases/tag/v1.90.5)***
 * Forked ***[Box2D v2.4.1](https://github.com/erincatto/box2d/releases/tag/v2.4.1)***
-* Forked ***[glad2](https://github.com/Dav1dde/glad)***
+* Forked ***[glbinding v3.3.0](https://github.com/cginternals/glbinding/releases/tag/v3.3.0)***
 * Forked ***[stb_image v2.30](https://github.com/nothings/stb/blob/master/stb_image.h)*** 
 * No License Whatsoever
 * Project-Specific Options **(C++17)**
     - *ImGui* - impl_opengl3 impl_opengl3_loader impl_glfw
     - *Box2D* - None
-    - *glad2* - ALIAS MX
+    - *glbinding* - glbinding glbinding-aux static
     - *stb_image* - None
 * ### **[Note]:**
     * **If *ANY* directory 'setup' recipe is missing, call 'make setup'**

@@ -1,4 +1,5 @@
-THREAD_COUNT = 12
+THREAD_COUNT_TOTAL = $(shell nproc)
+THREAD_COUNT := $(shell echo $$(($(THREAD_COUNT_TOTAL) - 2)))
 
 
 cleandbg:
