@@ -105,9 +105,10 @@ record_build() {
 
 create_symlink() {
 	export CYGWIN=winsymlinks:nativestrict
+	printf "[B"
 	# create symlink to the currently/previously created compile_commands_(debug/release).json ( in ../ [.vscode/] )
-	printf "ln -sf %s %s" "${COMPILE_DATABASE_ABSOLUTE_FILENAME}" "${COMPILE_DATABASE_ABSOLUTE_FILENAME_SYMLINK}"
 	ln -sf "$COMPILE_DATABASE_ABSOLUTE_FILENAME" "$COMPILE_DATABASE_ABSOLUTE_FILENAME_SYMLINK"
+	printf "E Symlink Done] "
 }
 
 

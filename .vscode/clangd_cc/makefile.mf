@@ -172,7 +172,7 @@ build_library: $(OBJS) archive_lib
 
 
 install_internal:
-	@ printf  "[OUTPUTDIR='$(OUTPUTDIR)', INSTALLDIR='$(INSTALLDIR)'] [B
+	@ printf  "[OUTPUTDIR='$(OUTPUTDIR)', INSTALLDIR='$(INSTALLDIR)'] [B"
 	-@ cp -rf ./include ./$(INSTALLDIR_BASE)
 	-@ cp -rf ./$(OUTPUTDIR)/* ./$(INSTALLDIR)
 	@ printf "E Internal Rule Done]"
